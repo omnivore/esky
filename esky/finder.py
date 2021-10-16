@@ -117,6 +117,10 @@ class DefaultVersionFinder(VersionFinder):
         self.download_url = download_url
         super(DefaultVersionFinder,self).__init__()
         self.version_graph = VersionGraph()
+        self._cafile = None
+
+    def set_cafile(self, cafile):
+        self._cafile = cafile
 
     def _workdir(self,app,nm,create=True):
         """Get full path of named working directory, inside the given app."""
@@ -162,7 +166,7 @@ class DefaultVersionFinder(VersionFinder):
             really_rmtree(os.path.join(rddir,nm))
 
     def open_url(self,url):
-        f = urllib2.urlopen(url, timeout=30)
+        f = urllib2.urlopen(url, timeout=30, cafile=self._cafile)
         try:
             size = f.headers.get("content-length",None)
             if size is not None:

@@ -239,13 +239,14 @@ class Esky(object):
 
     lock_timeout = 60*60  # 1 hour timeout on appdir locks
 
-    def __init__(self,appdir_or_exe,version_finder=None):
+    def __init__(self,appdir_or_exe,version_finder=None, cafile=None):
         self._init_from_appdir(appdir_or_exe)
         self._lock_count = 0
         self.sudo_proxy = None
         self.keep_sudo_proxy_alive = False
         self._old_sudo_proxies = []
         self.version_finder = version_finder
+        self.version_finder.set_cafile(cafile)
         self.reinitialize()
 
     def _init_from_appdir(self,appdir_or_exe):
